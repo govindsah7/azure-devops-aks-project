@@ -1,0 +1,24 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+
+metadata:
+  name: python-calculator
+
+spec:
+
+  hosts:
+  - "*"
+
+  gateways:
+  - python-calculator-gateway
+
+  http:
+  - match:
+    - uri:
+        prefix: /
+
+    route:
+    - destination:
+        host: python-calculator
+        port:
+          number: 80

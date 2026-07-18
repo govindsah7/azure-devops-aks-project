@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: python-calculator
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: python-calculator
+  template:
+    metadata:
+      labels:
+        app: python-calculator
+    spec:
+      containers:
+      - name: python-calculator
+        image: IMAGE_PLACEHOLDER
+        imagePullPolicy: Always
+
+        ports:
+        - containerPort: 5000
+
+        envFrom:
+        - configMapRef:
+            name: calculator-config
+
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 5000
+
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 5000
